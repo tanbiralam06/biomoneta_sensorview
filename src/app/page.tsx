@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import KeyMetricCard from "@/components/key-metric-card";
 import SensorChart from "@/components/sensor-chart";
 import BacteriaChart from "@/components/bacteria-chart";
-import { Thermometer, Droplets, CloudCog, Wind, Zap, Biohazard } from "lucide-react";
+import { Thermometer, Droplets, CloudCog, Wind, Biohazard } from "lucide-react";
 
 export default function Home() {
   const [data, setData] = useState<SensorDataPoint[]>([]);
@@ -56,7 +56,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           <KeyMetricCard
             title="CO2 Levels"
             metricKey="co2"
@@ -70,6 +70,15 @@ export default function Home() {
             latestData={latestData}
             unit="°C"
             icon={<Thermometer className="h-6 w-6 text-accent" />}
+          />
+           <KeyMetricCard
+            title="Bacteria"
+            metricKey="bacteria"
+            latestData={latestData}
+            unit="CFU/m³"
+            icon={<Biohazard className="h-8 w-8 text-destructive animate-pulse" />}
+            className="lg:col-span-1"
+            isPrimary={true}
           />
           <KeyMetricCard
             title="Humidity"
@@ -88,6 +97,9 @@ export default function Home() {
         </div>
 
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2">
+           <div className="lg:col-span-2">
+             <BacteriaChart data={data} />
+           </div>
           <SensorChart
             data={data}
             title="Temperature Over Time"
@@ -116,16 +128,17 @@ export default function Home() {
               { key: "pm10", name: "PM10", color: "hsl(var(--chart-4))" },
             ]}
           />
-          <SensorChart
-            data={data}
-            title="VOC & NOx Levels"
-            description="Volatile Organic Compounds & Nitrogen Oxides"
-            metrics={[
-              { key: "voc", name: "VOC", color: "hsl(var(--chart-5))" },
-              { key: "nox", name: "NOx", color: "hsl(var(--chart-2))" },
-            ]}
-          />
-          <BacteriaChart data={data} />
+           <div className="lg:col-span-2">
+            <SensorChart
+                data={data}
+                title="VOC & NOx Levels"
+                description="Volatile Organic Compounds & Nitrogen Oxides"
+                metrics={[
+                  { key: "voc", name: "VOC", color: "hsl(var(--chart-5))" },
+                  { key: "nox", name: "NOx", color: "hsl(var(--chart-2))" },
+                ]}
+              />
+          </div>
         </div>
       </main>
     </div>

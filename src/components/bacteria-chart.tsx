@@ -5,6 +5,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Referenc
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { Biohazard } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type BacteriaChartProps = {
   data: SensorDataPoint[];
@@ -19,6 +20,7 @@ const chartConfig = {
 };
 
 export default function BacteriaChart({ data }: BacteriaChartProps) {
+  const isMobile = useIsMobile();
   return (
     <Card className="transition-all duration-300 hover:border-accent glow-shadow">
       <CardHeader>
@@ -44,7 +46,8 @@ export default function BacteriaChart({ data }: BacteriaChartProps) {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value, index) => {
-                if (data.length > 0 && (index % Math.floor(data.length / 6) === 0 || index === data.length -1)) {
+                const divisor = isMobile ? 8 : 6;
+                if (data.length > 0 && (index % Math.floor(data.length / divisor) === 0 || index === data.length -1)) {
                   return value;
                 }
                 return "";

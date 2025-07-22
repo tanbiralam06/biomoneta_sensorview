@@ -24,6 +24,7 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type SensorChartProps = {
   data: SensorDataPoint[];
@@ -42,6 +43,7 @@ export default function SensorChart({
   description,
   metrics,
 }: SensorChartProps) {
+  const isMobile = useIsMobile();
   const chartConfig = metrics.reduce((acc, metric) => {
     acc[metric.key] = {
       label: metric.name,
@@ -73,7 +75,8 @@ export default function SensorChart({
               axisLine={false}
               tickMargin={8}
               tickFormatter={(value, index) => {
-                if (data.length > 0 && (index % Math.floor(data.length / 6) === 0 || index === data.length -1)) {
+                const divisor = isMobile ? 8 : 6;
+                if (data.length > 0 && (index % Math.floor(data.length / divisor) === 0 || index === data.length -1)) {
                   return value;
                 }
                 return "";

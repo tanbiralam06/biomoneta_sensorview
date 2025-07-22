@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import KeyMetricCard from "@/components/key-metric-card";
 import SensorChart from "@/components/sensor-chart";
 import BacteriaChart from "@/components/bacteria-chart";
-import { Thermometer, Droplets, CloudCog, Wind } from "lucide-react";
+import { Thermometer, Droplets, CloudCog, Wind, Zap, Biohazard } from "lucide-react";
 
 export default function Home() {
   const [data, setData] = useState<SensorDataPoint[]>([]);
@@ -19,6 +19,14 @@ export default function Home() {
     setData(generatedData);
     setLastUpdated(new Date());
     setIsLoading(false);
+
+    const interval = setInterval(() => {
+        const generatedData = generateSensorData();
+        setData(generatedData);
+        setLastUpdated(new Date());
+    }, 30000); // refresh every 30 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   if (isLoading) {
@@ -28,11 +36,15 @@ export default function Home() {
   const latestData = data[data.length - 1];
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background">
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <div className="flex min-h-screen w-full flex-col bg-background relative">
+      <div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[bottom_1px_center] dark:bg-grid-slate-400/[0.05] dark:bg-bottom dark:border-b dark:border-slate-100/5" style={{
+        maskImage: 'linear-gradient(to bottom, transparent, black, black, transparent)',
+        WebkitMaskImage: 'linear-gradient(to bottom, transparent, black, black, transparent)'
+      }}></div>
+      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8 z-10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight font-headline">
+            <h1 className="text-3xl font-bold tracking-tight font-headline text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
               Environmental Sensor Data Dashboard
             </h1>
             <p className="text-muted-foreground">
@@ -50,28 +62,28 @@ export default function Home() {
             metricKey="co2"
             latestData={latestData}
             unit="ppm"
-            icon={<CloudCog className="h-6 w-6 text-muted-foreground" />}
+            icon={<CloudCog className="h-6 w-6 text-accent" />}
           />
           <KeyMetricCard
             title="Temperature"
             metricKey="temperature"
             latestData={latestData}
             unit="°C"
-            icon={<Thermometer className="h-6 w-6 text-muted-foreground" />}
+            icon={<Thermometer className="h-6 w-6 text-accent" />}
           />
           <KeyMetricCard
             title="Humidity"
             metricKey="humidity"
             latestData={latestData}
             unit="%"
-            icon={<Droplets className="h-6 w-6 text-muted-foreground" />}
+            icon={<Droplets className="h-6 w-6 text-accent" />}
           />
           <KeyMetricCard
             title="PM 2.5"
             metricKey="pm25"
             latestData={latestData}
             unit="µg/m³"
-            icon={<Wind className="h-6 w-6 text-muted-foreground" />}
+            icon={<Wind className="h-6 w-6 text-accent" />}
           />
         </div>
 

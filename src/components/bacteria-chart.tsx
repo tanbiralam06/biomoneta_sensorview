@@ -4,7 +4,7 @@ import type { SensorDataPoint } from "@/lib/data";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ReferenceLine } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
-import { Bug } from "lucide-react";
+import { Biohazard } from "lucide-react";
 
 type BacteriaChartProps = {
   data: SensorDataPoint[];
@@ -14,13 +14,13 @@ const chartConfig = {
   bacteria: {
     label: "Bacteria",
     color: "hsl(var(--chart-4))",
-    icon: Bug,
+    icon: Biohazard,
   },
 };
 
 export default function BacteriaChart({ data }: BacteriaChartProps) {
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:border-accent glow-shadow">
       <CardHeader>
         <CardTitle>Bacteria Levels</CardTitle>
         <CardDescription>

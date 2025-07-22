@@ -51,7 +51,7 @@ export default function SensorChart({
   }, {} as any);
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:border-accent glow-shadow">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -85,15 +85,29 @@ export default function SensorChart({
               tickMargin={8}
               width={30}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
             <Legend content={<ChartLegendContent />} />
+            {metrics.map((metric) => (
+               <defs key={metric.key}>
+                <linearGradient
+                  id={`color${metric.key}`}
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop offset="5%" stopColor={metric.color} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={metric.color} stopOpacity={0.2} />
+                </linearGradient>
+              </defs>
+            ))}
             {metrics.map((metric) => (
               <Line
                 key={metric.key}
                 dataKey={metric.key}
                 type="monotone"
-                stroke={metric.color}
-                strokeWidth={2}
+                stroke={`url(#color${metric.key})`}
+                strokeWidth={3}
                 dot={false}
                 name={metric.name}
               />

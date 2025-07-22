@@ -22,14 +22,14 @@ export default function KeyMetricCard({
     : "N/A";
 
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:border-accent glow-shadow">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {icon}
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">
-          {value} <span className="text-base font-normal text-muted-foreground">{unit}</span>
+        <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+          {value} <span className="text-lg font-normal text-muted-foreground">{unit}</span>
         </div>
         <p className="text-xs text-muted-foreground">
           Current reading

@@ -56,7 +56,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 gap-4">
           <KeyMetricCard
             title="CO2 Levels"
             metricKey="co2"
@@ -77,7 +77,7 @@ export default function Home() {
             latestData={latestData}
             unit="CFU/m³"
             icon={<Biohazard className="h-8 w-8 text-destructive animate-pulse" />}
-            className="lg:col-span-1"
+            className="lg:col-start-2 lg:row-start-1 lg:row-span-2"
             isPrimary={true}
           />
           <KeyMetricCard

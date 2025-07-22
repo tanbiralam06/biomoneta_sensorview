@@ -24,7 +24,6 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 type SensorChartProps = {
   data: SensorDataPoint[];
@@ -43,7 +42,6 @@ export default function SensorChart({
   description,
   metrics,
 }: SensorChartProps) {
-  const isMobile = useIsMobile();
   const chartConfig = metrics.reduce((acc, metric) => {
     acc[metric.key] = {
       label: metric.name,
@@ -58,65 +56,66 @@ export default function SensorChart({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[250px] w-full">
-          <LineChart
-            accessibilityLayer
-            data={data}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="time"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value, index) => {
-                const divisor = isMobile ? 8 : 6;
-                if (data.length > 0 && (index % Math.floor(data.length / divisor) === 0 || index === data.length -1)) {
-                  return value;
-                }
-                return "";
+      <CardContent className="overflow-x-auto">
+        <div className="min-w-[600px]">
+          <ChartContainer config={chartConfig} className="h-[250px] w-full">
+            <LineChart
+              accessibilityLayer
+              data={data}
+              margin={{
+                left: 12,
+                right: 12,
               }}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              width={30}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-            <Legend content={<ChartLegendContent />} />
-            {metrics.map((metric) => (
-               <defs key={metric.key}>
-                <linearGradient
-                  id={`color${metric.key}`}
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
-                  <stop offset="5%" stopColor={metric.color} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={metric.color} stopOpacity={0.2} />
-                </linearGradient>
-              </defs>
-            ))}
-            {metrics.map((metric) => (
-              <Line
-                key={metric.key}
-                dataKey={metric.key}
-                type="monotone"
-                stroke={`url(#color${metric.key})`}
-                strokeWidth={3}
-                dot={false}
-                name={metric.name}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="time"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value, index) => {
+                  if (data.length > 0 && (index % Math.floor(data.length / 12) === 0 || index === data.length -1)) {
+                    return value;
+                  }
+                  return "";
+                }}
               />
-            ))}
-          </LineChart>
-        </ChartContainer>
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                width={30}
+              />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+              <Legend content={<ChartLegendContent />} />
+              {metrics.map((metric) => (
+                 <defs key={metric.key}>
+                  <linearGradient
+                    id={`color${metric.key}`}
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="5%" stopColor={metric.color} stopOpacity={0.8} />
+                    <stop offset="95%" stopColor={metric.color} stopOpacity={0.2} />
+                  </linearGradient>
+                </defs>
+              ))}
+              {metrics.map((metric) => (
+                <Line
+                  key={metric.key}
+                  dataKey={metric.key}
+                  type="monotone"
+                  stroke={`url(#color${metric.key})`}
+                  strokeWidth={3}
+                  dot={false}
+                  name={metric.name}
+                />
+              ))}
+            </LineChart>
+          </ChartContainer>
+        </div>
       </CardContent>
     </Card>
   );
